@@ -1,9 +1,9 @@
 import string
 
 
-class Stories:
+class InitialStory:
     def __init__(self, location):
-        self.keywords = []
+        self.keywords = {}
         with open(location, "r") as f:
             self.story = f.read()
 
@@ -24,3 +24,21 @@ class Stories:
             placeholderstring = self.story[:resetpoint] + self.keywords[arrayindex] + self.story[self.finder():]
             self.story = placeholderstring
             arrayindex += 1
+
+
+def makenewstory():
+    choice = str(input("What do you want to do? Import Story? Random Story? Specific Story"))
+    i = 0
+    while i == 0:
+        if choice == "import":
+            newstory = InitialStory(input("Enter the file path!"))
+            i += 1
+        elif choice == "random":
+            i += 1
+        elif choice == "specific":
+            i += 1
+        else:
+            choice = str(input("There was a typo. Enter import, random, or specific."))
+
+
+makenewstory()
