@@ -17,13 +17,22 @@ class InitialStory:
                 return count + 1
 
     def slicer(self):
+        keywordvalues = list(self.keywords.values())
         arrayindex = 0
         while self.story.find("_") != -1 and arrayindex < len(self.keywords):
             resetpoint = self.story.find("_")
             print(resetpoint, "reset")
-            placeholderstring = self.story[:resetpoint] + self.keywords[arrayindex] + self.story[self.finder():]
+            placeholderstring = self.story[:resetpoint] + keywordvalues[arrayindex] + self.story[self.finder():]
             self.story = placeholderstring
             arrayindex += 1
+
+    def dictmaker(self, amount):
+        for i in range(amount):
+            wordplaceholder = str(input("What type of word will be input?"))
+            if wordplaceholder in self.keywords.keys():
+                self.keywords[f"{wordplaceholder}{i}"] = ""
+            else:
+                self.keywords[wordplaceholder] = ""
 
 
 def makenewstory():
@@ -32,6 +41,9 @@ def makenewstory():
     while i == 0:
         if choice == "import":
             newstory = InitialStory(input("Enter the file path!"))
+            iterations = int(input("How many Keywords are there?"))
+            newstory.dictmaker(iterations)
+            print(newstory.keywords.keys())
             i += 1
         elif choice == "random":
             i += 1
