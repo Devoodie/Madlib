@@ -1,11 +1,20 @@
 import string
+import os
+import json
 
 
-class InitialStory:
-    def __init__(self, location):
+class Story:
+    def __init__(self, name, location):
+        self.name = name
         self.keywords = {}
         with open(location, "r") as f:
             self.story = f.read()
+
+    def savestory(self):
+        os.mkdir(f"{self.name}", os.path.realpath(__file__))
+        with open(f"{self.name}", "x") as savefile:
+            savefile.write(f"{self.name}\n")
+            savefile.write(self.keywords)
 
     def finder(self):
         for count, character in enumerate(self.story):
@@ -13,7 +22,6 @@ class InitialStory:
                 if character == "_" and self.story[count + 1] in string.punctuation:
                     return count + 1
             if character == "_" and self.story[count + 1] == " ":
-                print(count)
                 return count + 1
 
     def slicer(self):
@@ -34,21 +42,19 @@ class InitialStory:
             else:
                 self.keywords[wordplaceholder] = ""
 
-
 def makenewstory():
-    choice = str(input("What do you want to do? Import Story? Random Story? Specific Story"))
-    i = 0
-    while i == 0:
+    choice = str(input("What do you want to do? Import Story? Random Story? Specific Story?"))
+    while True:
         if choice == "import":
-            newstory = InitialStory(input("Enter the file path!"))
+            newstory = Story(input("Enter the name of the story!"), input("Enter the file path!"))
             iterations = int(input("How many Keywords are there?"))
             newstory.dictmaker(iterations)
             print(newstory.keywords.keys())
-            i += 1
+            break
         elif choice == "random":
-            i += 1
+            break
         elif choice == "specific":
-            i += 1
+            break
         else:
             choice = str(input("There was a typo. Enter import, random, or specific."))
 
