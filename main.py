@@ -11,10 +11,13 @@ class Story:
             self.story = f.read()
 
     def savestory(self):
-        os.mkdir(f"{self.name}", os.path.realpath(__file__))
-        with open(f"{self.name}", "x") as savefile:
-            savefile.write(f"{self.name}\n")
-            savefile.write(self.keywords)
+        ogpath = "C:\\Users\\devan\\PycharmProjects\\pythonProject\\"
+        os.mkdir(f"{self.name}")
+        newpath = os.path.join(ogpath, f"{self.name}")
+        with open(newpath + "\\story.txt", "w") as savefile:
+            json.dump(self.story, savefile)
+        with open(newpath + "\\keywords.txt", "w") as savefile:
+            json.dump(self.keywords, savefile)
 
     def finder(self):
         for count, character in enumerate(self.story):
@@ -42,6 +45,7 @@ class Story:
             else:
                 self.keywords[wordplaceholder] = ""
 
+
 def makenewstory():
     choice = str(input("What do you want to do? Import Story? Random Story? Specific Story?"))
     while True:
@@ -50,6 +54,7 @@ def makenewstory():
             iterations = int(input("How many Keywords are there?"))
             newstory.dictmaker(iterations)
             print(newstory.keywords.keys())
+            newstory.savestory()
             break
         elif choice == "random":
             break
