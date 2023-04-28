@@ -59,7 +59,7 @@ class Story:
 
     def finder(self):
         for count, character in enumerate(self.story):
-            if self.story[count + 1] != "_" or self.story[count+1] != "\\":
+            if self.story[count + 1] != "_" and self.story[count+1] != "\\":
                 if character == "_" and self.story[count + 1] in string.punctuation:
                     return count + 1
             if character == "_" and self.story[count + 1] == " ":
@@ -87,7 +87,6 @@ class Story:
                     resetpoint = count+1
                     placeholderstring = self.story[:lettercombo] + " " + self.story[resetpoint:]
                     self.story = placeholderstring
-
 
     def dictmaker(self, amount):
         for i in range(amount):
