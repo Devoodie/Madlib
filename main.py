@@ -43,14 +43,14 @@ class Story:
                     print("There was a typo! Type delete, new, or load")
 
     def loadstory(self):
-        with open(self.name+".txt", "r") as savefile:
+        with open(os.path.realpath(self.name)+"\\"+self.name+".txt", "r") as savefile:
             tempdict = json.load(savefile)
         self.keywords = tempdict['keywords']
         self.story = tempdict['story']
 
     def runstory(self):
         for count, key in enumerate(self.keywords):
-            if count in key:
+            if f"{count}" in key:
                 printkey = key.replace(f"{count}", "")
                 self.keywords[key] = input(f'Enter another {printkey}')
             else:
@@ -59,22 +59,35 @@ class Story:
 
     def finder(self):
         for count, character in enumerate(self.story):
-            if self.story[count + 1] != "_":
+            if self.story[count + 1] != "_" or self.story[count+1] != "\\":
                 if character == "_" and self.story[count + 1] in string.punctuation:
                     return count + 1
             if character == "_" and self.story[count + 1] == " ":
                 return count + 1
+            if character == "_" and self.story[count + 1] in string.ascii_letters:
+                return count + 1
 
-    def slicer(self):
-        keywordvalues = list(self.keywords.values())
-        arrayindex = 0
-        while self.story.find("_") != -1 and arrayindex < len(self.keywords):
-            resetpoint = self.story.find("_")
-            print(resetpoint, "reset")
-            placeholderstring = self.story[:resetpoint] + keywordvalues[arrayindex] + self.story[self.finder():]
-            self.story = placeholderstring
-            arrayindex += 1
-        return self.story
+    def slicer(self, vers=1):
+        if vers == 1:
+            keywordvalues = list(self.keywords.values())
+            arrayindex = 0
+            while self.story.find("_") != -1 and arrayindex < len(self.keywords):
+                resetpoint = self.story.find("_")
+                placeholderstring = self.story[:resetpoint] + keywordvalues[arrayindex] + self.story[self.finder():]
+                self.story = placeholderstring
+                arrayindex += 1
+            return self.story
+        else:
+            for count, lettercombo in self.story:
+                if lettercombo == "_" and self.story[count-1] in string.ascii_letters:
+                    resetpoint = count - 1
+                    placeholderstring = self.story[:resetpoint] + " " + self.story[lettercombo:]
+                    self.story = placeholderstring
+                if lettercombo == "_" and self.story[count+1] in string.ascii_letters:
+                    resetpoint = count+1
+                    placeholderstring = self.story[:lettercombo] + " " + self.story[resetpoint:]
+                    self.story = placeholderstring
+
 
     def dictmaker(self, amount):
         for i in range(amount):
@@ -95,6 +108,7 @@ def runprogram():
             iterations = int(input("How many Keywords are there?"))
             newstory.dictmaker(iterations)
             print(newstory.keywords.keys())
+            newstory.slicer(vers=2)
             newstory.savestory(input("Enter the file path of the story to import!"))
             loadornah = input("do you want to run the story? Yes or no?")
             if loadornah == "yes":
