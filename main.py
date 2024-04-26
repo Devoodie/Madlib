@@ -40,7 +40,6 @@ class Story:
                     self.runstory()
                     return 0
                 else:
-                    print("There was a typo! Type delete, new, or load")
 
     def loadstory(self):
         with open(os.path.realpath(self.name)+"\\"+self.name+".txt", "r") as savefile:
